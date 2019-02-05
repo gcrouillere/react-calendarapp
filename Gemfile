@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'webpacker'
-gem 'react-rails'
+gem 'react_on_rails'
 
 gem 'jquery-rails'
 
