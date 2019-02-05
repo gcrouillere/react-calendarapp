@@ -2,18 +2,10 @@ import React from "react"
 import PropTypes from "prop-types"
 import moment from 'moment'
 
-class Appointment extends React.Component {
-
-  render () {
-    return (
-      <React.Fragment >
+const Appointment = ({appointment}) =>
       <div className="appointment">
-        <h3>{this.props.appointment.title}</h3>
-        <p>{moment(this.props.appointment.apt_time).format('MMMM DD YY, h:mm:ss a')}</p>
+        <h3>{appointment.title}</h3>
+        <p>{moment(appointment.apt_time).format('MMMM DD YY, h:mm:ss a')}</p>
       </div>
-      </React.Fragment>
-    );
-  }
-}
 
 export default Appointment

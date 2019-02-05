@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import DateTime from 'react-datetime'
+import FormLabel from './FormLabel'
 
 class AppointmentForm extends React.Component {
 
@@ -20,7 +21,7 @@ class AppointmentForm extends React.Component {
 
     return (
       <React.Fragment>
-          <h2>Make a new appointment</h2>
+          <FormLabel label={'Make a new appointment'}/>
           <form action="" onSubmit={this.onAppointementFormSubmit} className="apt-form">
             <input type="text" name="input_title" placeholder="Appointment Title" value={this.props.input_title} onChange={this.handleInputChange}/>
             <DateTime input={false} open={true} inputProps={inputProps} value={this.props.input_apt_time} onChange={this.setAppointment} />
