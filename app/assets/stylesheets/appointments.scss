@@ -7,6 +7,11 @@
   background-color: lightblue;
 }
 
+.apt-submit-button:disabled {
+  background: lightgrey;
+  cursor: not-allowed;
+}
+
 .apt-form {
   margin: 0 auto;
   width: 50%;
