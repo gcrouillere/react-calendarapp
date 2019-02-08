@@ -13,3 +13,7 @@ const AppointmentsContainer = ({appointments}) =>
   </div>
 
 export default AppointmentsContainer
+
+AppointmentsContainer.propTypes = {
+  appointments: PropTypes.array.isRequired
+};

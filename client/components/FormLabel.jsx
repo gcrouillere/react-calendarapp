@@ -13,3 +13,7 @@ class FormLabel extends React.Component {
 }
 
 export default FormLabel
+
+FormLabel.propTypes = {
+  label: PropTypes.string
+}
