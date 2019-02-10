@@ -55,7 +55,7 @@ class Appointments extends React.Component {
     return (
       <div>
         <AppointmentForm addNewAppointment={this.addNewAppointment} updateNewAppointment={this.updateNewAppointment} authenticity_token={this.props.authenticity_token}/>
-        <AppointmentsContainer appointments={this.state.appointments}/>
+        <AppointmentsContainer appointments={this.state.appointments} match={this.props.match} disabled={this.props.match.path === '/appointments/:id/edit'}/>
       </div>
     );
   }

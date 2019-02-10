@@ -1,7 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 import DateTime from 'react-datetime'
-import FormLabel from './FormLabel'
 import FormErrors from "./FormErrors"
 import moment from 'moment'
 import update from 'immutability-helper'
@@ -9,10 +8,6 @@ import $ from 'jquery'
 import { validations } from '../utils/validations';
 
 class AppointmentForm extends React.Component {
-
-  static propTypes = {
-
-  }
 
   static formValidations = {
     title: [
@@ -23,16 +18,11 @@ class AppointmentForm extends React.Component {
     ]
   }
 
-  static defaultProps = {
-
-  }
-
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
-      title: {value: this.props.appointment ? this.props.appointment.title : '', valid: false},
-      apt_time: {value: this.props.appointment ? this.props.appointment.apt_time : '', valid: false},
+      title: {value: '', valid: false},
+      apt_time: {value: new Date(), valid: false},
       formErrors: {},
       formValid: false,
       editing: false
@@ -81,7 +71,6 @@ class AppointmentForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const appointment = {title: this.state.title.value, apt_time: this.state.apt_time.value}
-    console.log(this.props)
     this.state.editing ? this.updateAppointment(appointment) : this.addAppointment(appointment)
   }
 
@@ -107,8 +96,7 @@ class AppointmentForm extends React.Component {
       }
     })
     .done((data) => {
-      console.log('done')
-      this.props.updateNewAppointment(data)
+      this.updateNewAppointment(data)
       this.setState({formErrors: {}})
     })
     .fail((response) => {
@@ -121,7 +109,6 @@ class AppointmentForm extends React.Component {
     const fieldValue = e.target.value
     this.onListContainerInputChange(fieldName, fieldValue, AppointmentForm.formValidations[fieldName])
   }
-
 
   setAppointment = (e) => {
     const fieldName = 'apt_time';
@@ -136,13 +123,13 @@ class AppointmentForm extends React.Component {
 
     return (
       <div className="apt-form-with-title">
-        <FormLabel label={'Make a new appointment'}/>
+        <h2>{this.state.editing ? 'Update appointment' : 'Make a new appointment' }</h2>
         <FormErrors formErrors={this.state.formErrors}/>
         <form action="" onSubmit={this.handleSubmit} className="apt-form">
           <input type="text" name="title" placeholder="Appointment Title" value={this.state.title.value} onChange={this.handleInputChange}/>
           <DateTime input={false} open={true} inputProps={inputProps} value={moment(this.state.apt_time.value)} onChange={this.setAppointment} />
           <input type="hidden" name="authenticity_token" id="authenticity_token" value={this.props.authenticity_token}/>
-          <input type="submit" value="Make appointment" className="apt-submit-button" disabled={!this.state.formValid}/>
+          <input type="submit" value={this.state.editing ? 'Update Appointment' : 'Make Appointment'} className="apt-submit-button" disabled={!this.state.formValid}/>
         </form>
       </div>
     );

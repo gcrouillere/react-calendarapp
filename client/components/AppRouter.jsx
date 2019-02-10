@@ -15,7 +15,9 @@ export default (props) => {
         )}/>
         <Route exact path="/appointments/:id" component={Appointment} />
         <Route exact path="/appointments/:id/edit" render={routeProps => (
-          <AppointmentForm {...routeProps} authenticity_token={props.authenticity_token}/>
+          <div>
+            <Appointments {...routeProps} appointments={props.appointments} authenticity_token={props.authenticity_token}/>
+          </div>
         )}/>
       </div>
     </Router>

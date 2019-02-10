@@ -24,6 +24,7 @@ class AppointmentsController < ApplicationController
   end
 
   def edit
+    @authenticity_token = form_authenticity_token
     render :index
   end
 

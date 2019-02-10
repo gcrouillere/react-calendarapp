@@ -4,7 +4,7 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import $ from 'jquery'
 
-export default class Appointment extends React.Component {
+class Appointment extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -46,3 +46,5 @@ export default class Appointment extends React.Component {
     )
   }
 }
+
+export default Appointment
