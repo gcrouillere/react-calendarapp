@@ -1,7 +1,9 @@
 class AppointmentsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @appointment = Appointment.new
-    @appointments = Appointment.order(apt_time: :asc)
+    @appointments = current_user.appointments.order(apt_time: :asc)
     @authenticity_token = form_authenticity_token
     respond_to do |format|
       format.html
@@ -53,6 +55,6 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.require(:appointment).permit(:title, :apt_time)
+    params.require(:appointment).permit(:title, :apt_time).merge(user: current_user)
   end
 end
