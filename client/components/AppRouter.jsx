@@ -6,19 +6,21 @@ import AppointmentForm from "./AppointmentForm"
 import { AppHeader } from './AppHeader';
 
 export default (props) => {
+  // const a = withRouter(props => props)
+  // console.log(a)
+  // let homeAndAptEditPathsRegexp = new RegExp(/^\/appointments\/:id\/edit$|^\/$/);
+  // let homeAndAptEditPaths = homeAndAptEditPathsRegexp.test(props.match.path) ? props.match.path : "";
+
   return (
     <Router>
       <div>
         <AppHeader />
-        <Route exact path="/" render={routeProps => (
-          <Appointments {...routeProps} appointments={props.appointments} authenticity_token={props.authenticity_token}/>
-        )}/>
-        <Route exact path="/appointments/:id" component={Appointment} />
-        <Route exact path="/appointments/:id/edit" render={routeProps => (
-          <div>
+        {["/", "/appointments/:id/edit"].map(path =>
+          <Route exact path={path} render={routeProps => (
             <Appointments {...routeProps} appointments={props.appointments} authenticity_token={props.authenticity_token}/>
-          </div>
-        )}/>
+          )}/>)
+        }
+        <Route exact path="/appointments/:id" component={Appointment} />
       </div>
     </Router>
   )

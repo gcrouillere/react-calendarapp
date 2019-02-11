@@ -20,21 +20,20 @@ class Appointments extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      appointments: this.props.appointments,
+      appointments: this.props.appointments
     }
   }
 
   componentDidMount () {
-    if(this.props.match) {
-      $.ajax({
-        type: "GET",
-        url: '/appointments/',
-        dataType: "JSON"
-      }).done((data) => {
-        this.setState({appointments: data.appointments});
-      });
-    }
+    $.ajax({
+      type: "GET",
+      url: '/appointments/',
+      dataType: "JSON"
+    }).done((data) => {
+      this.setState({appointments: data.appointments});
+    });
   }
+
 
   addNewAppointment = (data) => {
     const appointments = update(this.state.appointments, {$push: [data]})
@@ -51,10 +50,15 @@ class Appointments extends React.Component {
     })})
   }
 
+  deleteAppointementfromAppointments = (data) => {
+    console.log(data)
+    this.setState({appointments: data})
+  }
+
   render () {
     return (
       <div>
-        <AppointmentForm addNewAppointment={this.addNewAppointment} updateNewAppointment={this.updateNewAppointment} authenticity_token={this.props.authenticity_token}/>
+        <AppointmentForm addNewAppointment={this.addNewAppointment} history={this.props.history} match={this.props.match} updateNewAppointment={this.updateNewAppointment} deleteAppointementfromAppointments={this.deleteAppointementfromAppointments} authenticity_token={this.props.authenticity_token}/>
         <AppointmentsContainer appointments={this.state.appointments} match={this.props.match} disabled={this.props.match.path === '/appointments/:id/edit'}/>
       </div>
     );

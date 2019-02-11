@@ -9,6 +9,10 @@ import { validations } from '../utils/validations';
 
 class AppointmentForm extends React.Component {
 
+  static propTypes = {
+
+  }
+
   static formValidations = {
     title: [
       (s) => { return(validations.checkMinLength(s, 3)) }
@@ -18,11 +22,15 @@ class AppointmentForm extends React.Component {
     ]
   }
 
+  static defaultProps = {
+
+  }
+
   constructor(props) {
     super(props)
     this.state = {
       title: {value: '', valid: false},
-      apt_time: {value: new Date(), valid: false},
+      apt_time: {value: '', valid: false},
       formErrors: {},
       formValid: false,
       editing: false
@@ -30,7 +38,7 @@ class AppointmentForm extends React.Component {
   }
 
   componentDidMount () {
-    if(this.props.match) {
+    if(this.props.match.path !== '/') {
       $.ajax({
         type: "GET",
         url: `/appointments/${this.props.match.params.id}`,
@@ -96,7 +104,7 @@ class AppointmentForm extends React.Component {
       }
     })
     .done((data) => {
-      this.updateNewAppointment(data)
+      this.props.updateNewAppointment(data)
       this.setState({formErrors: {}})
     })
     .fail((response) => {
@@ -110,10 +118,25 @@ class AppointmentForm extends React.Component {
     this.onListContainerInputChange(fieldName, fieldValue, AppointmentForm.formValidations[fieldName])
   }
 
+
   setAppointment = (e) => {
     const fieldName = 'apt_time';
     const fieldValue = e.toDate();
     this.onListContainerInputChange(fieldName, fieldValue, AppointmentForm.formValidations[fieldName])
+  }
+
+  deleteAppointement = () => {
+    $.ajax({
+      type: "DELETE",
+      url: `/appointments/${this.props.match.params.id}`,
+      dataType: "JSON",
+      data: {authenticity_token: this.props.authenticity_token}
+    }).done((data) => {
+      this.props.history.push('/')
+      this.setState({formErrors: {}})
+    }).fail((response) => {
+      console.log('appointment deleting failed!');
+    })
   }
 
   render () {
@@ -123,17 +146,22 @@ class AppointmentForm extends React.Component {
 
     return (
       <div className="apt-form-with-title">
-        <h2>{this.state.editing ? 'Update appointment' : 'Make a new appointment' }</h2>
+        <h2>{this.state.editing ? 'Update appointment' : 'Make a new appointment' }
+         </h2>
         <FormErrors formErrors={this.state.formErrors}/>
         <form action="" onSubmit={this.handleSubmit} className="apt-form">
           <input type="text" name="title" placeholder="Appointment Title" value={this.state.title.value} onChange={this.handleInputChange}/>
           <DateTime input={false} open={true} inputProps={inputProps} value={moment(this.state.apt_time.value)} onChange={this.setAppointment} />
           <input type="hidden" name="authenticity_token" id="authenticity_token" value={this.props.authenticity_token}/>
-          <input type="submit" value={this.state.editing ? 'Update Appointment' : 'Make Appointment'} className="apt-submit-button" disabled={!this.state.formValid}/>
+          <input type="submit" value={this.state.editing ? 'Update appointment' : 'New appointment' } className="apt-submit-button" disabled={!this.state.formValid}/>
         </form>
+        {this.state.editing && (
+          <div><button onClick={this.deleteAppointement}>Delete Appointment</button></div>
+        )}
       </div>
     );
   }
 }
 
 export default AppointmentForm
+
